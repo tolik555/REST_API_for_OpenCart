@@ -12,7 +12,7 @@ var controller = require('./Controllers/controller');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 //app.use(expressValidator());
-app.use(function(err, req, res) {
+app.use(function(err, req, res, next) {
     res.status(err.status).send('bad request');
     //res.json(err.body);
     console.log(err);
