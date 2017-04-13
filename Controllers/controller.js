@@ -18,6 +18,10 @@ exports.addManufacturer = function (req, res) {
     //     //return;
     // }
 
+    if(req.headers){
+        console.log(req.headers['x-oc-restadmin-id']);
+    }
+
      var validationError = {
          success: false,
          error: {
@@ -56,4 +60,26 @@ exports.addManufacturer = function (req, res) {
      } else {
          res.json(validationError);
      }
+};
+
+exports.DelManufacturerById = function (req, res) {
+    var delResult = {
+        "success": ""
+    };
+
+    var delId = req.body.manufacturers;
+    if(!Array.isArray(delId) || !delId.length) {
+        delResult.success = false;
+        res.json(delResult);
+        return;
+    }
+    model.delManufacturer(delId, function (err, result) {
+        if(err){
+            console.log(err);
+            return res.sendStatus(500);
+        }
+        delResult.success = true;
+        res.json(delResult);
+        console.log(result);
+    });
 };

@@ -4,7 +4,7 @@
 var express = require('express'),
     bodyParser = require('body-parser'),
     //expressValidator = require('express-validator'),
-    cllc = require('cllc')(),
+    log = require('cllc')(),
     app = express();
 
 var controller = require('./Controllers/controller');
@@ -13,18 +13,20 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 //app.use(expressValidator());
 app.use(function(err, req, res, next) {
-    res.status(err.status).send('bad request');
-    //res.json(err.body);
-    console.log(err);
+    res.status(err.status || 500);
+    log.error('Internal error(%d): %s',res.statusCode,err.message);
+    res.send({ error: err.message });
+    next();
+    return;
 });
-
 
 //Manufacturer
 //get /manufacturers/limit/{}/page/{page} -> get list of manufacturers
 //app.get('/manufacturers/limit/:limit/page/:page', controller.getListManufacturers);
 
 //post /manufacturers -> add new manufacturer to store
-// Format body raw json(application/json)
+// Format body raw json(application/json)(Manufacturer object)
+// header X-Oc-Restadmin-Id 123(Api Secret key)
 // {
 //     "name":"name",
 //      "image":"path",
@@ -37,8 +39,10 @@ app.post('/manufacturers', controller.addManufacturer);
 //app.post('/manufacturers/:id/images', controller.addImageManufacturer);
 //put /manufacturers/{id} -> Update manufacturer by ID
 //app.put('/manufacturers/:id', updateManufacturerById);
+
 //delete /manufacturers Delete namufacturers
-//app.delete('/manufacturers/:id', controller.DelManufacturerById);
+//example {"manufacturers":[8,9]}
+app.delete('/manufacturers', controller.DelManufacturerById);
 
 var server = app.listen(3000, function () {
     console.log('Listening on port %d', server.address().port);

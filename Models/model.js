@@ -17,3 +17,15 @@ exports.createManufacturer = function (oc_manufacturer, oc_manufacturer_to_store
         });
     });
 };
+
+exports.delManufacturer = function (delId, cb) {
+    var prepare = "DELETE FROM `oc_manufacturer` WHERE `manufacturer_id` IN ("+delId.join()+");" +
+        "DELETE FROM `oc_manufacturer_to_store` WHERE `manufacturer_id` IN ("+delId.join()+");";
+    mysqldb.pool.getConnection(function (err, connection) {
+        connection.query(prepare, function (error, result) {
+            cb(error, result);
+        });
+        connection.release();
+        if(err) console.log('Connection Error:'+err);
+    });
+};

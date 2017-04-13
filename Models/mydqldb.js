@@ -22,5 +22,6 @@ exports.pool      =    mysql.createPool({
     user     : 'root',
     password : '',
     database : 'opencart',
+    multipleStatements: true,
     debug    :  false
 });
