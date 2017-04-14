@@ -101,7 +101,8 @@ exports.addImageToManufacturer = function (req, res) {
 // }
 exports.updateManufacturerById = function (req, res) {
     var updateManufacturerResult = {};
-    if(!/[^\d]/g.test(req.params.limit)){
+    if(!/[^\d]/g.test(req.params.id)){
+        var id = req.patam.id;
         if(req.body.name&&req.body.name.length>=2&&req.body.name.length<=64){
             var oc_manufacturer = {
                 name: encodeURI(req.body.name.trim()),
@@ -114,7 +115,7 @@ exports.updateManufacturerById = function (req, res) {
                 store_id: encodeURI(req.body.store_id.trim())
             };
 
-            model.updateManufacturer( oc_manufacturer, oc_manufacturer_to_store, function (err, result) {
+            model.updateManufacturer(id, oc_manufacturer, oc_manufacturer_to_store, function (err, result) {
                 if(err){
                     console.log(err);
                     return res.sendStatus(500);
