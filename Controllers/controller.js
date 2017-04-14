@@ -25,8 +25,7 @@ exports.getListManufacturers = function (req,res) {
         getListManufacturersResult.error = { "name":'After "limit" and "page" must be number from 0 to infinity!' };
         res.json(getListManufacturersResult);
     }
-        //console.log(req.params.page);
-};
+};//getListManufacturers
 
 exports.addManufacturer = function (req, res) {
 
@@ -84,13 +83,60 @@ exports.addManufacturer = function (req, res) {
      } else {
          res.json(validationError);
      }
-};
+};//addManufacturer
+
+// /manufacturers/{id}/images
+exports.addImageToManufacturer = function (req, res) {
+    console.log(req.path.id);
+    console.log('yyyp '+req.params.id);
+};//addImageToManufacturer
+
+// /manufacturers/{id}
+//  body
+// {
+//     "name":"name",
+//      "image":"path",
+//     "sort_order":"0",
+//     "store_id":"0"
+// }
+exports.updateManufacturerById = function (req, res) {
+    var updateManufacturerResult = {};
+    if(!/[^\d]/g.test(req.params.limit)){
+        if(req.body.name&&req.body.name.length>=2&&req.body.name.length<=64){
+            var oc_manufacturer = {
+                name: encodeURI(req.body.name.trim()),
+                image: encodeURI(req.body.image.trim()),
+                sort_order: req.body.sort_order
+            };
+
+            var oc_manufacturer_to_store = {
+                manufacturer_id: '',
+                store_id: encodeURI(req.body.store_id.trim())
+            };
+
+            model.updateManufacturer( oc_manufacturer, oc_manufacturer_to_store, function (err, result) {
+                if(err){
+                    console.log(err);
+                    return res.sendStatus(500);
+                }
+                updateManufacturerResult.succes = true;
+                updateManufacturerResult.data.id = result.insertId;
+                res.json(updateManufacturerResult);
+                console.log(result);
+            })
+        } else {
+            updateManufacturerResult.succes = false;
+            updateManufacturerResult.error = { name: "Manufacturer Name must be between 2 and 64 characters!" };
+            res.json(updateManufacturerResult);
+        }
+    } else {
+        updateManufacturerResult.succes = false;
+        updateManufacturerResult.error = { name: 'Id must be number from 0 to infinity!' };
+        res.json(updateManufacturerResult);
+    }
+};//updateManufacturerById
 
 exports.DelManufacturerById = function (req, res) {
-    var delResult = {
-        "success": ""
-    };
-
     var delId = req.body.manufacturers;
     if(!Array.isArray(delId) || !delId.length) {
         delResult.success = false;
@@ -106,4 +152,4 @@ exports.DelManufacturerById = function (req, res) {
         res.json(delResult);
         console.log(result);
     });
-};
+};//DelManufacturerById
