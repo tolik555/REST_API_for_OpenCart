@@ -29,6 +29,17 @@ exports.createManufacturer = function (oc_manufacturer, oc_manufacturer_to_store
     });
 };
 
+exports.updateManufacturer = function (id, oc_manufacturer, oc_manufacturer_to_store, cb) {
+    var prepare = "UPDATE `oc_manufacturer` SET `name`=?, `image`=?, `sort_order`=? WHERE `manufacturer_id`=?;" +
+                  "UPDATE `oc_manufacturer_to_store` SET `store_id`=? WHERE `manufacturer_id`=?;";
+    var insertParams = [oc_manufacturer.name, oc_manufacturer.image, oc_manufacturer.sort_order, id, oc_manufacturer_to_store.store_id, id];
+    mysqldb.pool.getConnection(function (err,connection) {
+        connection.query(prepare, insertParams,function (error, result) {
+            cb(error, result);
+        });
+    });
+};
+
 exports.delManufacturer = function (delId, cb) {
     var prepare = "DELETE FROM `oc_manufacturer` WHERE `manufacturer_id` IN ("+delId.join()+");" +
         "DELETE FROM `oc_manufacturer_to_store` WHERE `manufacturer_id` IN ("+delId.join()+");";

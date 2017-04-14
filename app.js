@@ -36,11 +36,10 @@ app.get('/manufacturers/limit/:limit/page/:page', controller.getListManufacturer
 app.post('/manufacturers', controller.addManufacturer);
 
 //post /manufacturers/{id}/images -> add image to manufacturer by manufacturer ID
-app.post('/manufacturers/{id}/images', addImageToManufacturer);
+app.post('/manufacturers/:id/images', controller.addImageToManufacturer);
 
-//app.post('/manufacturers/:id/images', controller.addImageManufacturer);
-//put /manufacturers/{id} -> Update manufacturer by ID
-//app.put('/manufacturers/:id', updateManufacturerById);
+//put /manufacturers/{id} -> Update manufacturer info by ID
+app.put('/manufacturers/:id', controller.updateManufacturerById);
 
 //delete /manufacturers Delete namufacturers
 //example {"manufacturers":[8,9]}

@@ -102,7 +102,7 @@ exports.addImageToManufacturer = function (req, res) {
 exports.updateManufacturerById = function (req, res) {
     var updateManufacturerResult = {};
     if(!/[^\d]/g.test(req.params.id)){
-        var id = req.patam.id;
+        var id = req.params.id;
         if(req.body.name&&req.body.name.length>=2&&req.body.name.length<=64){
             var oc_manufacturer = {
                 name: encodeURI(req.body.name.trim()),
@@ -121,7 +121,6 @@ exports.updateManufacturerById = function (req, res) {
                     return res.sendStatus(500);
                 }
                 updateManufacturerResult.succes = true;
-                updateManufacturerResult.data.id = result.insertId;
                 res.json(updateManufacturerResult);
                 console.log(result);
             })
