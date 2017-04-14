@@ -17,7 +17,7 @@ app.use(function(err, req, res, next) {
     log.error('Internal error(%d): %s',res.statusCode,err.message);
     res.send({ error: err.message });
     next();
-    return;
+    return err;
 });
 
 //Manufacturer
@@ -36,6 +36,8 @@ app.get('/manufacturers/limit/:limit/page/:page', controller.getListManufacturer
 app.post('/manufacturers', controller.addManufacturer);
 
 //post /manufacturers/{id}/images -> add image to manufacturer by manufacturer ID
+app.post('/manufacturers/{id}/images', addImageToManufacturer);
+
 //app.post('/manufacturers/:id/images', controller.addImageManufacturer);
 //put /manufacturers/{id} -> Update manufacturer by ID
 //app.put('/manufacturers/:id', updateManufacturerById);
