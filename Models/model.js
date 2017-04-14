@@ -3,6 +3,17 @@
  */
 var mysqldb = require('./mydqldb');
 
+exports.getListManufacturers = function (limit, page, cb) {
+    var prepare = "SELECT * FROM `oc_manufacturer` LIMIT "+page+","+limit+";";
+    mysqldb.pool.getConnection(function (err,connection) {
+        connection.query(prepare, function (error, result) {
+            cb(error,result);
+        });
+        connection.release();
+        if(err) console.log('Connection Error:'+err);
+    });
+};
+
 exports.createManufacturer = function (oc_manufacturer, oc_manufacturer_to_store, cb) {
     mysqldb.pool.getConnection(function (err, connection) {
         connection.query('INSERT INTO `oc_manufacturer` SET ?', oc_manufacturer, function (error,result) {

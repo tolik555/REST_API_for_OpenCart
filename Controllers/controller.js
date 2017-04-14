@@ -4,6 +4,30 @@
 var model = require('../Models/model');
 
 //Manufacturers
+
+exports.getListManufacturers = function (req,res) {
+    var getListManufacturersResult = {
+        "succes":""
+    };
+    if(!/[^\d]/g.test(req.params.limit)&&!/[^\d]/g.test(req.params.page)){
+        model.getListManufacturers(req.params.limit, req.params.page, function (err, result) {
+            if(err) {
+                console.log(err);
+                getListManufacturersResult.succes = false;
+                res.json(getListManufacturersResult);
+            }
+            getListManufacturersResult.succes = true;
+            getListManufacturersResult.data = result;
+            res.json(getListManufacturersResult);
+        });
+    } else {
+        getListManufacturersResult.succes = false;
+        getListManufacturersResult.error = { "name":'After "limit" and "page" must be number from 0 to infinity!' };
+        res.json(getListManufacturersResult);
+    }
+        //console.log(req.params.page);
+};
+
 exports.addManufacturer = function (req, res) {
 
     //req.sanitizeBody('name').escape().trim();

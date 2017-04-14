@@ -22,7 +22,7 @@ app.use(function(err, req, res, next) {
 
 //Manufacturer
 //get /manufacturers/limit/{}/page/{page} -> get list of manufacturers
-//app.get('/manufacturers/limit/:limit/page/:page', controller.getListManufacturers);
+app.get('/manufacturers/limit/:limit/page/:page', controller.getListManufacturers);
 
 //post /manufacturers -> add new manufacturer to store
 // Format body raw json(application/json)(Manufacturer object)
