@@ -3,15 +3,6 @@
  */
 var mysql = require('mysql');
 
-// exports.connection = mysql.createConnection({
-//     host: "127.0.0.1",
-//     user: "root",
-//     password: "",
-//     database: "opencart",
-//     multipleStatements: true,
-//     debag: false
-// });
-
 exports.pool      =    mysql.createPool({
     connectionLimit : 100, //important
     queueLimit: 100,
